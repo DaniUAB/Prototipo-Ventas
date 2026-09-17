@@ -77,4 +77,26 @@ class Venta extends BaseModel {
         $stmt->execute([$venta_id]);
         return $stmt->fetchAll();
     }
+
+    public function delete($id) {
+        try {
+            $this->db->beginTransaction();
+
+            $items = $this->detalle($id);
+            $restore = $this->db->prepare(
+                "UPDATE productos SET stock = stock + ? WHERE id = ?"
+            );
+            foreach ($items as $item) {
+                $restore->execute([$item['cantidad'], $item['producto_id']]);
+            }
+
+            $this->db->prepare("DELETE FROM ventas WHERE id = ?")->execute([$id]);
+
+            $this->db->commit();
+            return true;
+        } catch (Exception $e) {
+            $this->db->rollBack();
+            throw $e;
+        }
+    }
 }
