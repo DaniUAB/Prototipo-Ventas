@@ -1,3 +1,5 @@
+SET NAMES utf8mb4;
+
 CREATE DATABASE ventas_db CHARACTER SET utf8mb4;
 USE ventas_db;
 
@@ -60,4 +62,21 @@ CREATE TABLE venta_detalle (
     subtotal DECIMAL(10,2) NOT NULL,
     FOREIGN KEY (venta_id) REFERENCES ventas(id) ON DELETE CASCADE,
     FOREIGN KEY (producto_id) REFERENCES productos(id)
+);
+
+-- Catálogo de permisos del sistema
+CREATE TABLE permisos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    clave VARCHAR(50) UNIQUE NOT NULL,
+    modulo VARCHAR(50) NOT NULL,
+    descripcion VARCHAR(150) NOT NULL
+);
+
+-- Permisos asignados a cada usuario
+CREATE TABLE usuario_permisos (
+    usuario_id INT NOT NULL,
+    permiso_id INT NOT NULL,
+    PRIMARY KEY (usuario_id, permiso_id),
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id) ON DELETE CASCADE,
+    FOREIGN KEY (permiso_id) REFERENCES permisos(id) ON DELETE CASCADE
 );
