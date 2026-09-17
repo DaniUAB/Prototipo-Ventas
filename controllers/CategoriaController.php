@@ -13,6 +13,12 @@ class CategoriaController {
         require __DIR__ . '/../views/categorias/index.php';
     }
 
+    public function ver() {
+        $id = $_GET['id'] ?? 0;
+        $categoria = $this->model->find($id);
+        require __DIR__ . '/../views/categorias/ver.php';
+    }
+
     public function crear() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->model->create($_POST);
@@ -22,9 +28,22 @@ class CategoriaController {
         require __DIR__ . '/../views/categorias/form.php';
     }
 
-    public function eliminar() {
+    public function editar() {
         $id = $_GET['id'] ?? 0;
+        $categoria = $this->model->find($id);
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $this->model->update($id, $_POST);
+            header("Location: index.php?c=categoria&a=index");
+            exit;
+        }
+        require __DIR__ . '/../views/categorias/form.php';
+    }
+
+    public function eliminar() {
+        $id = $_GET['id'] ?? $_POST['id'] ?? 0;
         $this->model->delete($id);
         header("Location: index.php?c=categoria&a=index");
+        exit;
     }
 }
