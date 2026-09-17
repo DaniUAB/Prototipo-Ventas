@@ -6,9 +6,7 @@ class Database {
         if (self::$instance === null) {
             try {
                 self::$instance = new PDO(
-                    "mysql:host=localhost
-                    ;dbname=ventas_db
-                    ;charset=utf8mb4",
+                    "mysql:host=localhost;dbname=ventas_db;charset=utf8mb4",
                     "root",
                     "",
                     [
