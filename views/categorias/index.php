@@ -24,7 +24,7 @@
                     <td><?= htmlspecialchars($c['descripcion'] ?? '') ?></td>
                     <td class="text-end">
                         <div class="btn-group btn-group-sm">
-                            <a class="btn btn-outline-secondary" href="<?= url('index.php?c=categoria&a=ver&id=' . $c['id']) ?>">Ver</a>
+                            <?php modal_trigger('modalCategoriaVer' . $c['id'], 'Ver', 'btn btn-outline-secondary', 'bi-eye'); ?>
                             <?php modal_trigger('modalCategoriaEditar' . $c['id'], 'Editar', 'btn btn-outline-primary', 'bi-pencil'); ?>
                             <a class="btn btn-outline-danger" href="<?= url('index.php?c=categoria&a=eliminar&id=' . $c['id']) ?>" onclick="return confirm('¿Eliminar esta categoría?')">Eliminar</a>
                         </div>
@@ -41,6 +41,14 @@
 <?php modal_close('Guardar'); ?>
 
 <?php foreach ($categorias as $c): ?>
+    <?php modal_open('modalCategoriaVer' . $c['id'], 'Detalle de Categoría', null, '', 'bi-eye'); ?>
+        <dl class="row mb-0">
+            <dt class="col-sm-4">ID</dt><dd class="col-sm-8"><?= $c['id'] ?></dd>
+            <dt class="col-sm-4">Nombre</dt><dd class="col-sm-8"><?= htmlspecialchars($c['nombre']) ?></dd>
+            <dt class="col-sm-4">Descripción</dt><dd class="col-sm-8 mb-0"><?= htmlspecialchars($c['descripcion'] ?? '') ?></dd>
+        </dl>
+    <?php modal_close(); ?>
+
     <?php modal_open('modalCategoriaEditar' . $c['id'], 'Editar Categoría', url('index.php?c=categoria&a=editar&id=' . $c['id'])); ?>
         <?php $item = $c; require __DIR__ . '/_campos.php'; ?>
     <?php modal_close('Actualizar'); ?>
