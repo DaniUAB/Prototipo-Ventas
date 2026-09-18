@@ -1,0 +1,148 @@
+:root {
+    --brand: #2563eb;
+    --brand-dark: #1d4ed8;
+    --sidebar-bg: #1f2937;
+    --sidebar-link: #cbd5e1;
+    --sidebar-hover: #374151;
+    --body-bg: #f3f4f6;
+}
+
+body {
+    background-color: var(--body-bg);
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* Layout */
+.app-shell {
+    display: flex;
+    min-height: 100vh;
+}
+
+.app-sidebar {
+    width: 230px;
+    flex-shrink: 0;
+    background-color: var(--sidebar-bg);
+    color: #e5e7eb;
+}
+
+.app-sidebar .brand {
+    color: #fff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 1.1rem 1.25rem;
+    border-bottom: 1px solid #374151;
+    margin: 0;
+}
+
+.app-sidebar .nav-link {
+    color: var(--sidebar-link);
+    padding: .7rem 1.25rem;
+    font-size: .92rem;
+}
+
+.app-sidebar .nav-link:hover,
+.app-sidebar .nav-link.active {
+    background-color: var(--sidebar-hover);
+    color: #fff;
+}
+
+.app-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.app-topbar {
+    background: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .08);
+    padding: .9rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.app-topbar h1 {
+    font-size: 1.1rem;
+    margin: 0;
+}
+
+.app-content {
+    padding: 1.5rem;
+    flex: 1;
+}
+
+/* Componentes */
+.card {
+    border: none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .08);
+}
+
+.card-header {
+    background: #fff;
+    border-bottom: 1px solid #eef0f3;
+}
+
+.btn-brand {
+    background-color: var(--brand);
+    border-color: var(--brand);
+    color: #fff;
+}
+
+.btn-brand:hover {
+    background-color: var(--brand-dark);
+    border-color: var(--brand-dark);
+    color: #fff;
+}
+
+/* Login */
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #1f2937 0%, #2563eb 100%);
+    padding: 1rem;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 380px;
+    border: none;
+    border-radius: .75rem;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, .25);
+}
+
+/* Modales */
+.modal-content {
+    border: none;
+    border-radius: .75rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, .25);
+}
+
+.modal-header {
+    border-bottom: 1px solid #eef0f3;
+    padding: 1rem 1.25rem;
+}
+
+.modal-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+}
+
+.modal-body {
+    padding: 1.25rem;
+}
+
+.modal-footer {
+    border-top: 1px solid #eef0f3;
+    padding: .85rem 1.25rem;
+}
+
+.modal-backdrop.show {
+    opacity: .5;
+}
