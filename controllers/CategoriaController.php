@@ -22,6 +22,7 @@ class CategoriaController {
     public function crear() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->model->create($_POST);
+            flash('success', 'Categoría creada correctamente');
             header("Location: index.php?c=categoria&a=index");
             exit;
         }
@@ -34,6 +35,7 @@ class CategoriaController {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->model->update($id, $_POST);
+            flash('success', 'Categoría actualizada correctamente');
             header("Location: index.php?c=categoria&a=index");
             exit;
         }
@@ -43,6 +45,7 @@ class CategoriaController {
     public function eliminar() {
         $id = $_GET['id'] ?? $_POST['id'] ?? 0;
         $this->model->delete($id);
+        flash('success', 'Categoría eliminada correctamente');
         header("Location: index.php?c=categoria&a=index");
         exit;
     }

@@ -22,6 +22,7 @@ class UsuarioController {
     public function crear() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->model->create($_POST);
+            flash('success', 'Usuario creado correctamente');
             header("Location: index.php?c=usuario&a=index");
             exit;
         }
@@ -34,6 +35,7 @@ class UsuarioController {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->model->update($id, $_POST);
+            flash('success', 'Usuario actualizado correctamente');
             header("Location: index.php?c=usuario&a=index");
             exit;
         }
@@ -43,6 +45,7 @@ class UsuarioController {
     public function eliminar() {
         $id = $_GET['id'] ?? $_POST['id'] ?? 0;
         $this->model->delete($id);
+        flash('success', 'Usuario eliminado correctamente');
         header("Location: index.php?c=usuario&a=index");
         exit;
     }

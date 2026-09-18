@@ -1,35 +1,24 @@
 <?php
 require_once __DIR__ . '/../layout.php';
-$editar = isset($usuario) && $usuario;
-$accion = $editar ? 'editar&id=' . $usuario['id'] : 'crear';
-layout_head($editar ? 'Editar Usuario' : 'Nuevo Usuario');
+$esEdicion = isset($usuario) && $usuario;
+$item = $usuario ?? [];
+$accion = $esEdicion ? 'editar&id=' . $usuario['id'] : 'crear';
+layout_head($esEdicion ? 'Editar Usuario' : 'Nuevo Usuario');
 ?>
-<div class="card">
-    <div class="card-header">
-        <h3><?= $editar ? 'Editar Usuario' : 'Nuevo Usuario' ?></h3>
-        <a class="btn btn-secondary" href="<?= url('index.php?c=usuario&a=index') ?>">Volver</a>
+<div class="card" style="max-width: 640px;">
+    <div class="card-header d-flex justify-content-between align-items-center py-3">
+        <h5 class="mb-0"><?= $esEdicion ? 'Editar Usuario' : 'Nuevo Usuario' ?></h5>
+        <a class="btn btn-outline-secondary btn-sm" href="<?= url('index.php?c=usuario&a=index') ?>">
+            <i class="bi bi-arrow-left me-1"></i>Volver
+        </a>
     </div>
-    <form method="POST" action="<?= url('index.php?c=usuario&a=' . $accion) ?>">
-        <div class="field">
-            <label>Nombre</label>
-            <input type="text" name="nombre" value="<?= htmlspecialchars($usuario['nombre'] ?? '') ?>" required>
-        </div>
-        <div class="field">
-            <label>Email</label>
-            <input type="email" name="email" value="<?= htmlspecialchars($usuario['email'] ?? '') ?>" required>
-        </div>
-        <div class="field">
-            <label>Contraseña <?= $editar ? '(dejar en blanco para no cambiar)' : '' ?></label>
-            <input type="password" name="password" <?= $editar ? '' : 'required' ?>>
-        </div>
-        <div class="field">
-            <label>Rol</label>
-            <select name="rol">
-                <option value="vendedor" <?= (($usuario['rol'] ?? '') === 'vendedor') ? 'selected' : '' ?>>Vendedor</option>
-                <option value="admin" <?= (($usuario['rol'] ?? '') === 'admin') ? 'selected' : '' ?>>Admin</option>
-            </select>
-        </div>
-        <button class="btn" type="submit"><?= $editar ? 'Actualizar' : 'Guardar' ?></button>
-    </form>
+    <div class="card-body">
+        <form method="POST" action="<?= url('index.php?c=usuario&a=' . $accion) ?>">
+            <?php require __DIR__ . '/_campos.php'; ?>
+            <button class="btn btn-brand" type="submit">
+                <i class="bi bi-save me-1"></i><?= $esEdicion ? 'Actualizar' : 'Guardar' ?>
+            </button>
+        </form>
+    </div>
 </div>
 <?php layout_foot(); ?>

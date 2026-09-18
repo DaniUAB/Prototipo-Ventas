@@ -59,6 +59,7 @@ class VentaController {
                     $usuario_id,
                     $items
                 );
+                flash('success', 'Venta registrada correctamente');
                 header("Location: index.php?c=venta&a=index");
                 exit;
             } catch (Exception $e) {
@@ -75,8 +76,9 @@ class VentaController {
         $id = $_GET['id'] ?? $_POST['id'] ?? 0;
         try {
             $this->venta->delete($id);
+            flash('success', 'Venta anulada correctamente');
         } catch (Exception $e) {
-            die("Error al anular la venta: " . $e->getMessage());
+            flash('danger', 'Error al anular la venta: ' . $e->getMessage());
         }
         header("Location: index.php?c=venta&a=index");
         exit;

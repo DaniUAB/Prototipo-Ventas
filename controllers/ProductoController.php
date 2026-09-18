@@ -12,6 +12,7 @@ class ProductoController {
 
     public function index() {
         $productos = $this->model->allWithCategoria();
+        $categorias = $this->categoria->all();
         require __DIR__ . '/../views/productos/index.php';
     }
 
@@ -24,6 +25,7 @@ class ProductoController {
     public function crear() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->model->create($_POST);
+            flash('success', 'Producto creado correctamente');
             header("Location: index.php?c=producto&a=index");
             exit;
         }
@@ -37,6 +39,7 @@ class ProductoController {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->model->update($id, $_POST);
+            flash('success', 'Producto actualizado correctamente');
             header("Location: index.php?c=producto&a=index");
             exit;
         }
@@ -47,6 +50,7 @@ class ProductoController {
     public function eliminar() {
         $id = $_GET['id'] ?? $_POST['id'] ?? 0;
         $this->model->delete($id);
+        flash('success', 'Producto eliminado correctamente');
         header("Location: index.php?c=producto&a=index");
         exit;
     }

@@ -29,6 +29,7 @@ class PermisoController {
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $this->permiso->asignar($id, $_POST['permisos'] ?? []);
+            flash('success', 'Permisos actualizados correctamente');
             header('Location: ' . url('index.php?c=permiso&a=index'));
             exit;
         }

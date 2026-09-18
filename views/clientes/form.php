@@ -1,36 +1,24 @@
 <?php
 require_once __DIR__ . '/../layout.php';
-$editar = isset($cliente) && $cliente;
-$accion = $editar ? 'editar&id=' . $cliente['id'] : 'crear';
-layout_head($editar ? 'Editar Cliente' : 'Nuevo Cliente');
+$esEdicion = isset($cliente) && $cliente;
+$item = $cliente ?? [];
+$accion = $esEdicion ? 'editar&id=' . $cliente['id'] : 'crear';
+layout_head($esEdicion ? 'Editar Cliente' : 'Nuevo Cliente');
 ?>
-<div class="card">
-    <div class="card-header">
-        <h3><?= $editar ? 'Editar Cliente' : 'Nuevo Cliente' ?></h3>
-        <a class="btn btn-secondary" href="<?= url('index.php?c=cliente&a=index') ?>">Volver</a>
+<div class="card" style="max-width: 640px;">
+    <div class="card-header d-flex justify-content-between align-items-center py-3">
+        <h5 class="mb-0"><?= $esEdicion ? 'Editar Cliente' : 'Nuevo Cliente' ?></h5>
+        <a class="btn btn-outline-secondary btn-sm" href="<?= url('index.php?c=cliente&a=index') ?>">
+            <i class="bi bi-arrow-left me-1"></i>Volver
+        </a>
     </div>
-    <form method="POST" action="<?= url('index.php?c=cliente&a=' . $accion) ?>">
-        <div class="field">
-            <label>Nombre</label>
-            <input type="text" name="nombre" value="<?= htmlspecialchars($cliente['nombre'] ?? '') ?>" required>
-        </div>
-        <div class="field">
-            <label>Documento</label>
-            <input type="text" name="documento" value="<?= htmlspecialchars($cliente['documento'] ?? '') ?>">
-        </div>
-        <div class="field">
-            <label>Teléfono</label>
-            <input type="text" name="telefono" value="<?= htmlspecialchars($cliente['telefono'] ?? '') ?>">
-        </div>
-        <div class="field">
-            <label>Email</label>
-            <input type="email" name="email" value="<?= htmlspecialchars($cliente['email'] ?? '') ?>">
-        </div>
-        <div class="field">
-            <label>Dirección</label>
-            <input type="text" name="direccion" value="<?= htmlspecialchars($cliente['direccion'] ?? '') ?>">
-        </div>
-        <button class="btn" type="submit"><?= $editar ? 'Actualizar' : 'Guardar' ?></button>
-    </form>
+    <div class="card-body">
+        <form method="POST" action="<?= url('index.php?c=cliente&a=' . $accion) ?>">
+            <?php require __DIR__ . '/_campos.php'; ?>
+            <button class="btn btn-brand" type="submit">
+                <i class="bi bi-save me-1"></i><?= $esEdicion ? 'Actualizar' : 'Guardar' ?>
+            </button>
+        </form>
+    </div>
 </div>
 <?php layout_foot(); ?>
