@@ -32,7 +32,7 @@
                     </td>
                     <td class="text-end">
                         <div class="btn-group btn-group-sm">
-                            <a class="btn btn-outline-secondary" href="<?= url('index.php?c=producto&a=ver&id=' . $p['id']) ?>">Ver</a>
+                            <?php modal_trigger('modalProductoVer' . $p['id'], 'Ver', 'btn btn-outline-secondary', 'bi-eye'); ?>
                             <?php modal_trigger('modalProductoEditar' . $p['id'], 'Editar', 'btn btn-outline-primary', 'bi-pencil'); ?>
                             <a class="btn btn-outline-danger" href="<?= url('index.php?c=producto&a=eliminar&id=' . $p['id']) ?>" onclick="return confirm('¿Eliminar este producto?')">Eliminar</a>
                         </div>
@@ -49,6 +49,16 @@
 <?php modal_close('Guardar'); ?>
 
 <?php foreach ($productos as $p): ?>
+    <?php modal_open('modalProductoVer' . $p['id'], 'Detalle de Producto', null, '', 'bi-eye'); ?>
+        <dl class="row mb-0">
+            <dt class="col-sm-4">ID</dt><dd class="col-sm-8"><?= $p['id'] ?></dd>
+            <dt class="col-sm-4">Nombre</dt><dd class="col-sm-8"><?= htmlspecialchars($p['nombre']) ?></dd>
+            <dt class="col-sm-4">Categoría</dt><dd class="col-sm-8"><?= htmlspecialchars($p['categoria']) ?></dd>
+            <dt class="col-sm-4">Precio</dt><dd class="col-sm-8">Bs <?= number_format($p['precio'], 2) ?></dd>
+            <dt class="col-sm-4">Stock</dt><dd class="col-sm-8 mb-0"><?= (int)$p['stock'] ?></dd>
+        </dl>
+    <?php modal_close(); ?>
+
     <?php modal_open('modalProductoEditar' . $p['id'], 'Editar Producto', url('index.php?c=producto&a=editar&id=' . $p['id'])); ?>
         <?php $item = $p; require __DIR__ . '/_campos.php'; ?>
     <?php modal_close('Actualizar'); ?>

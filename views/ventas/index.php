@@ -30,7 +30,7 @@
                     <td class="text-end fw-semibold">Bs <?= number_format($v['total'], 2) ?></td>
                     <td class="text-end">
                         <div class="btn-group btn-group-sm">
-                            <a class="btn btn-outline-secondary" href="<?= url('index.php?c=venta&a=ver&id=' . $v['id']) ?>">Ver</a>
+                            <?php modal_trigger('modalVentaVer' . $v['id'], 'Ver', 'btn btn-outline-secondary', 'bi-eye'); ?>
                             <a class="btn btn-outline-danger" href="<?= url('index.php?c=venta&a=eliminar&id=' . $v['id']) ?>" onclick="return confirm('¿Anular esta venta? Se devolverá el stock.')">Anular</a>
                         </div>
                     </td>
@@ -40,4 +40,41 @@
         </table>
     </div>
 </div>
+<?php foreach ($ventas as $v): ?>
+    <?php modal_open('modalVentaVer' . $v['id'], 'Detalle de Venta #' . $v['id'], null, 'lg', 'bi-eye'); ?>
+        <dl class="row mb-3">
+            <dt class="col-sm-3">Fecha</dt><dd class="col-sm-9"><?= htmlspecialchars($v['fecha']) ?></dd>
+            <dt class="col-sm-3">Cliente</dt><dd class="col-sm-9"><?= htmlspecialchars($v['cliente']) ?></dd>
+            <dt class="col-sm-3">Vendedor</dt><dd class="col-sm-9"><?= htmlspecialchars($v['usuario']) ?></dd>
+            <dt class="col-sm-3">Total</dt><dd class="col-sm-9 mb-0 fw-bold">Bs <?= number_format($v['total'], 2) ?></dd>
+        </dl>
+        <h6 class="mb-2"><i class="bi bi-box-seam me-1"></i>Productos</h6>
+        <div class="table-responsive">
+            <table class="table table-sm table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Producto</th>
+                        <th class="text-end">Cantidad</th>
+                        <th class="text-end">Precio Unitario</th>
+                        <th class="text-end">Subtotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php $itemsDetalle = $detalles[$v['id']] ?? []; ?>
+                <?php if (empty($itemsDetalle)): ?>
+                    <tr><td colspan="4" class="text-center text-secondary py-3">Sin detalle</td></tr>
+                <?php else: foreach ($itemsDetalle as $d): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($d['producto']) ?></td>
+                        <td class="text-end"><?= (int)$d['cantidad'] ?></td>
+                        <td class="text-end">Bs <?= number_format($d['precio_unitario'], 2) ?></td>
+                        <td class="text-end fw-semibold">Bs <?= number_format($d['subtotal'], 2) ?></td>
+                    </tr>
+                <?php endforeach; endif; ?>
+                </tbody>
+            </table>
+        </div>
+    <?php modal_close(); ?>
+<?php endforeach; ?>
+
 <?php layout_foot(); ?>

@@ -30,7 +30,7 @@
                     </td>
                     <td class="text-end">
                         <div class="btn-group btn-group-sm">
-                            <a class="btn btn-outline-secondary" href="<?= url('index.php?c=usuario&a=ver&id=' . $u['id']) ?>">Ver</a>
+                            <?php modal_trigger('modalUsuarioVer' . $u['id'], 'Ver', 'btn btn-outline-secondary', 'bi-eye'); ?>
                             <?php modal_trigger('modalUsuarioEditar' . $u['id'], 'Editar', 'btn btn-outline-primary', 'bi-pencil'); ?>
                             <a class="btn btn-outline-danger" href="<?= url('index.php?c=usuario&a=eliminar&id=' . $u['id']) ?>" onclick="return confirm('¿Eliminar este usuario?')">Eliminar</a>
                         </div>
@@ -47,6 +47,16 @@
 <?php modal_close('Guardar'); ?>
 
 <?php foreach ($usuarios as $u): ?>
+    <?php modal_open('modalUsuarioVer' . $u['id'], 'Detalle de Usuario', null, '', 'bi-eye'); ?>
+        <dl class="row mb-0">
+            <dt class="col-sm-4">ID</dt><dd class="col-sm-8"><?= $u['id'] ?></dd>
+            <dt class="col-sm-4">Nombre</dt><dd class="col-sm-8"><?= htmlspecialchars($u['nombre']) ?></dd>
+            <dt class="col-sm-4">Email</dt><dd class="col-sm-8"><?= htmlspecialchars($u['email']) ?></dd>
+            <dt class="col-sm-4">Rol</dt><dd class="col-sm-8"><?= htmlspecialchars($u['rol']) ?></dd>
+            <dt class="col-sm-4">Registrado</dt><dd class="col-sm-8 mb-0"><?= htmlspecialchars($u['created_at'] ?? '') ?></dd>
+        </dl>
+    <?php modal_close(); ?>
+
     <?php modal_open('modalUsuarioEditar' . $u['id'], 'Editar Usuario', url('index.php?c=usuario&a=editar&id=' . $u['id'])); ?>
         <?php $item = $u; $esEdicion = true; require __DIR__ . '/_campos.php'; ?>
     <?php modal_close('Actualizar'); ?>

@@ -14,6 +14,10 @@ class VentaController {
 
     public function index() {
         $ventas = $this->venta->allWithRelations();
+        $detalles = [];
+        foreach ($ventas as $v) {
+            $detalles[$v['id']] = $this->venta->detalle($v['id']);
+        }
         require __DIR__ . '/../views/ventas/index.php';
     }
 
