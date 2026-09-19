@@ -24,7 +24,7 @@ class Venta extends BaseModel {
                  VALUES (?, ?, ?, ?, ?)"
             );
             $getPrecio = $this->db->prepare(
-                "SELECT precio, stock FROM productos WHERE id = ?"
+                "SELECT nombre, precio, stock FROM productos WHERE id = ?"
             );
             $updateStock = $this->db->prepare(
                 "UPDATE productos SET stock = stock - ? WHERE id = ?"
@@ -35,7 +35,7 @@ class Venta extends BaseModel {
                 $prod = $getPrecio->fetch();
 
                 if (!$prod || $prod['stock'] < $item['cantidad']) {
-                    throw new Exception("Stock insuficiente para producto ID " . $item['producto_id']);
+                    throw new Exception("Stock insuficiente para «" . $prod['nombre'] . "»");
                 }
 
                 $subtotal = $prod['precio'] * $item['cantidad'];
