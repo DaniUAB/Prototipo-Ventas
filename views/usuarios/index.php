@@ -2,7 +2,7 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center py-3">
         <h5 class="mb-0"><i class="bi bi-person-badge me-2"></i>Listado de Usuarios</h5>
-        <?php modal_trigger('modalUsuarioCrear', 'Nuevo Usuario'); ?>
+        <?php if (can('usuarios.gestionar')): modal_trigger('modalUsuarioCrear', 'Nuevo Usuario'); endif; ?>
     </div>
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0">
@@ -30,9 +30,11 @@
                     </td>
                     <td class="text-end">
                         <div class="btn-group btn-group-sm">
-                            <?php modal_trigger('modalUsuarioVer' . $u['id'], 'Ver', 'btn btn-outline-secondary', 'bi-eye'); ?>
-                            <?php modal_trigger('modalUsuarioEditar' . $u['id'], 'Editar', 'btn btn-outline-primary', 'bi-pencil'); ?>
-                            <a class="btn btn-outline-danger" href="<?= url('index.php?c=usuario&a=eliminar&id=' . $u['id']) ?>" onclick="return confirm('¿Eliminar este usuario?')">Eliminar</a>
+                            <?php if (can('usuarios.ver')): modal_trigger('modalUsuarioVer' . $u['id'], 'Ver', 'btn btn-outline-secondary', 'bi-eye'); endif; ?>
+                            <?php if (can('usuarios.gestionar')): ?>
+                                <?php modal_trigger('modalUsuarioEditar' . $u['id'], 'Editar', 'btn btn-outline-primary', 'bi-pencil'); ?>
+                                <a class="btn btn-outline-danger" href="<?= url('index.php?c=usuario&a=eliminar&id=' . $u['id']) ?>" onclick="return confirm('¿Eliminar este usuario?')">Eliminar</a>
+                            <?php endif; ?>
                         </div>
                     </td>
                 </tr>

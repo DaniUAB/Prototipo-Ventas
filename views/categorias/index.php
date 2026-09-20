@@ -2,7 +2,7 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center py-3">
         <h5 class="mb-0"><i class="bi bi-tags me-2"></i>Listado de Categorías</h5>
-        <?php modal_trigger('modalCategoriaCrear', 'Nueva Categoría'); ?>
+        <?php if (can('categorias.gestionar')): modal_trigger('modalCategoriaCrear', 'Nueva Categoría'); endif; ?>
     </div>
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0">
@@ -24,9 +24,11 @@
                     <td><?= htmlspecialchars($c['descripcion'] ?? '') ?></td>
                     <td class="text-end">
                         <div class="btn-group btn-group-sm">
-                            <?php modal_trigger('modalCategoriaVer' . $c['id'], 'Ver', 'btn btn-outline-secondary', 'bi-eye'); ?>
-                            <?php modal_trigger('modalCategoriaEditar' . $c['id'], 'Editar', 'btn btn-outline-primary', 'bi-pencil'); ?>
-                            <a class="btn btn-outline-danger" href="<?= url('index.php?c=categoria&a=eliminar&id=' . $c['id']) ?>" onclick="return confirm('¿Eliminar esta categoría?')">Eliminar</a>
+                            <?php if (can('categorias.ver')): modal_trigger('modalCategoriaVer' . $c['id'], 'Ver', 'btn btn-outline-secondary', 'bi-eye'); endif; ?>
+                            <?php if (can('categorias.gestionar')): ?>
+                                <?php modal_trigger('modalCategoriaEditar' . $c['id'], 'Editar', 'btn btn-outline-primary', 'bi-pencil'); ?>
+                                <a class="btn btn-outline-danger" href="<?= url('index.php?c=categoria&a=eliminar&id=' . $c['id']) ?>" onclick="return confirm('¿Eliminar esta categoría?')">Eliminar</a>
+                            <?php endif; ?>
                         </div>
                     </td>
                 </tr>

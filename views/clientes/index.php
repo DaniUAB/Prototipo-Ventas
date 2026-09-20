@@ -2,7 +2,7 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center py-3">
         <h5 class="mb-0"><i class="bi bi-people me-2"></i>Listado de Clientes</h5>
-        <?php modal_trigger('modalClienteCrear', 'Nuevo Cliente'); ?>
+        <?php if (can('clientes.gestionar')): modal_trigger('modalClienteCrear', 'Nuevo Cliente'); endif; ?>
     </div>
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0">
@@ -28,9 +28,11 @@
                     <td><?= htmlspecialchars($c['email'] ?? '') ?></td>
                     <td class="text-end">
                         <div class="btn-group btn-group-sm">
-                            <?php modal_trigger('modalClienteVer' . $c['id'], 'Ver', 'btn btn-outline-secondary', 'bi-eye'); ?>
-                            <?php modal_trigger('modalClienteEditar' . $c['id'], 'Editar', 'btn btn-outline-primary', 'bi-pencil'); ?>
-                            <a class="btn btn-outline-danger" href="<?= url('index.php?c=cliente&a=eliminar&id=' . $c['id']) ?>" onclick="return confirm('¿Eliminar este cliente?')">Eliminar</a>
+                            <?php if (can('clientes.ver')): modal_trigger('modalClienteVer' . $c['id'], 'Ver', 'btn btn-outline-secondary', 'bi-eye'); endif; ?>
+                            <?php if (can('clientes.gestionar')): ?>
+                                <?php modal_trigger('modalClienteEditar' . $c['id'], 'Editar', 'btn btn-outline-primary', 'bi-pencil'); ?>
+                                <a class="btn btn-outline-danger" href="<?= url('index.php?c=cliente&a=eliminar&id=' . $c['id']) ?>" onclick="return confirm('¿Eliminar este cliente?')">Eliminar</a>
+                            <?php endif; ?>
                         </div>
                     </td>
                 </tr>

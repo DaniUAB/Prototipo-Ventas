@@ -2,9 +2,11 @@
 <div class="card">
     <div class="card-header d-flex justify-content-between align-items-center py-3">
         <h5 class="mb-0"><i class="bi bi-cart me-2"></i>Listado de Ventas</h5>
-        <a class="btn btn-brand btn-sm" href="<?= url('index.php?c=venta&a=crear') ?>">
-            <i class="bi bi-plus-lg me-1"></i>Nueva Venta
-        </a>
+        <?php if (can('ventas.gestionar')): ?>
+            <a class="btn btn-brand btn-sm" href="<?= url('index.php?c=venta&a=crear') ?>">
+                <i class="bi bi-plus-lg me-1"></i>Nueva Venta
+            </a>
+        <?php endif; ?>
     </div>
     <div class="table-responsive">
         <table class="table table-hover align-middle mb-0">
@@ -30,8 +32,10 @@
                     <td class="text-end fw-semibold">Bs <?= number_format($v['total'], 2) ?></td>
                     <td class="text-end">
                         <div class="btn-group btn-group-sm">
-                            <?php modal_trigger('modalVentaVer' . $v['id'], 'Ver', 'btn btn-outline-secondary', 'bi-eye'); ?>
-                            <a class="btn btn-outline-danger" href="<?= url('index.php?c=venta&a=eliminar&id=' . $v['id']) ?>" onclick="return confirm('¿Anular esta venta? Se devolverá el stock.')">Anular</a>
+                            <?php if (can('ventas.ver')): modal_trigger('modalVentaVer' . $v['id'], 'Ver', 'btn btn-outline-secondary', 'bi-eye'); endif; ?>
+                            <?php if (can('ventas.gestionar')): ?>
+                                <a class="btn btn-outline-danger" href="<?= url('index.php?c=venta&a=eliminar&id=' . $v['id']) ?>" onclick="return confirm('¿Anular esta venta? Se devolverá el stock.')">Anular</a>
+                            <?php endif; ?>
                         </div>
                     </td>
                 </tr>
