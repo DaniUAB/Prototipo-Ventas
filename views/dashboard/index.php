@@ -28,10 +28,17 @@ layout_head('Dashboard');
     <div class="col-md-4">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-body d-flex align-items-center gap-3">
-                <i class="bi bi-receipt display-5 text-info"></i>
-                <div>
-                    <div class="text-secondary small">Ticket promedio</div>
-                    <div class="h4 mb-0">Bs <?= number_format((float)($resumen['promedio'] ?? 0), 2) ?></div>
+                <i class="bi bi-trophy display-5 text-warning"></i>
+                <div class="text-truncate">
+                    <div class="text-secondary small">Producto más vendido</div>
+                    <div class="h5 mb-0 text-truncate">
+                        <?php if (!empty($masVendidos)): ?>
+                            <?= htmlspecialchars($masVendidos[0]['nombre']) ?>
+                            <span class="text-secondary fs-6">(<?= (int)$masVendidos[0]['total_vendido'] ?> uds)</span>
+                        <?php else: ?>
+                            <span class="fs-6 text-secondary">Sin ventas aún</span>
+                        <?php endif; ?>
+                    </div>
                 </div>
             </div>
         </div>
