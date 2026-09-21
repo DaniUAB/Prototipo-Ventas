@@ -30,14 +30,14 @@ layout_head('Nueva Venta');
             <div id="items" class="mb-2">
                 <div class="row g-2 item mb-2">
                     <div class="col-md-8">
-                        <select name="producto_id[]" class="form-select">
+                        <select name="producto_id[]" class="form-select" required>
                             <?php foreach ($productos as $p): ?>
                                 <option value="<?= $p['id'] ?>"><?= htmlspecialchars($p['nombre']) ?> - Bs <?= number_format($p['precio'], 2) ?></option>
                             <?php endforeach; ?>
                         </select>
                     </div>
                     <div class="col-md-4">
-                        <input type="number" name="cantidad[]" class="form-control" value="1" min="1">
+                        <input type="number" name="cantidad[]" class="form-control" value="1" min="1" required>
                     </div>
                 </div>
             </div>
