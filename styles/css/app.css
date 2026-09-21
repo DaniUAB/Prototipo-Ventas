@@ -218,18 +218,32 @@ a {
     opacity: .5;
 }
 
-/* Formularios: refinamiento con la paleta (aplica a paginas y modales) */
+/* Formularios: bordes verde mar suave que combinan con el negro
+   y el verde marino de la paleta (aplica a paginas y modales) */
 .form-control,
 .form-select {
-    border: 1px solid #d3dbd8;
+    border: 1px solid #a3c7bf;
     border-radius: .5rem;
     padding: .55rem .9rem;
+    color: #1a211f;
+    background-color: #fff;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.form-control::placeholder {
+    color: #9fb3ad;
+}
+
+.form-control:hover:not(:focus),
+.form-select:hover:not(:focus) {
+    border-color: #8db8ae;
 }
 
 .form-control:focus,
 .form-select:focus {
     border-color: var(--brand);
+    background-color: #fff;
+    color: #1a211f;
     box-shadow: 0 0 0 .25rem rgba(15, 118, 110, .15);
 }
 
