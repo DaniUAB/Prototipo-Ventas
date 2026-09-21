@@ -28,7 +28,7 @@ function layout_head($title = 'Sistema de Ventas') {
 <body>
 <div class="app-shell" id="appShell">
     <aside class="app-sidebar" id="appSidebar">
-        <h2 class="brand"><i class="bi bi-shop me-2"></i><?= APP_NAME ?></h2>
+        <h2 class="brand"><i class="bi bi-shop"></i><span><?= APP_NAME ?></span></h2>
         <nav class="nav flex-column mt-2">
             <?php foreach ($menu as $item): ?>
                 <?php if (!empty($item['admin']) ? is_admin() : can($item['perm'])): ?>
