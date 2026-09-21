@@ -77,12 +77,12 @@ new Chart(document.getElementById('chartGanancias'), {
         datasets: [{
             label: 'Bs ganados',
             data: ganancia,
-            borderColor: '#0d6efd',
-            backgroundColor: 'rgba(13,110,253,0.15)',
+            borderColor: '#0f766e',
+            backgroundColor: 'rgba(15,118,110,0.15)',
             fill: true,
             tension: 0.3,
             pointRadius: 5,
-            pointBackgroundColor: '#0d6efd'
+            pointBackgroundColor: '#0f766e'
         }]
     },
     options: {
@@ -102,7 +102,7 @@ new Chart(document.getElementById('chartStock'), {
         datasets: [{
             label: 'Unidades en stock',
             data: stockActual,
-            backgroundColor: ['#dc3545', '#fd7e14', '#ffc107', '#20c997', '#0d6efd'],
+            backgroundColor: ['#dc3545', '#fd7e14', '#ffc107', '#0f766e', '#115e59'],
             borderRadius: 6
         }]
     },
