@@ -2,7 +2,7 @@
 require_once __DIR__ . '/../layout.php';
 layout_head('Nueva Venta');
 ?>
-<div class="card">
+<div class="card form-page">
     <div class="card-header d-flex justify-content-between align-items-center py-3">
         <h5 class="mb-0"><i class="bi bi-cart-plus me-2"></i>Registrar Venta</h5>
         <a class="btn btn-outline-secondary btn-sm" href="<?= url('index.php?c=venta&a=index') ?>">

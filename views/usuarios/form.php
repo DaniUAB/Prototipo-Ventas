@@ -5,7 +5,7 @@ $item = $usuario ?? [];
 $accion = $esEdicion ? 'editar&id=' . $usuario['id'] : 'crear';
 layout_head($esEdicion ? 'Editar Usuario' : 'Nuevo Usuario');
 ?>
-<div class="card" style="max-width: 640px;">
+<div class="card form-page" style="max-width: 640px;">
     <div class="card-header d-flex justify-content-between align-items-center py-3">
         <h5 class="mb-0"><?= $esEdicion ? 'Editar Usuario' : 'Nuevo Usuario' ?></h5>
         <a class="btn btn-outline-secondary btn-sm" href="<?= url('index.php?c=usuario&a=index') ?>">

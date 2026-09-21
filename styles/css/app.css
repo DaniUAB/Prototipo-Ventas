@@ -198,42 +198,42 @@ a {
     color: #41504c;
 }
 
-/* Paginas de formulario (tarjeta que contiene un <form>) */
-.card:has(form) {
+/* Paginas de formulario (tarjeta con clase form-page) */
+.card.form-page {
     border-top: 3px solid var(--brand);
 }
 
-.card:has(form) .card-header {
+.card.form-page .card-header {
     background: linear-gradient(90deg, #163a35 0%, #115e59 100%);
     color: #fff;
     border-bottom: none;
 }
 
-.card:has(form) .card-header h5 {
+.card.form-page .card-header h5 {
     color: #fff;
 }
 
-.card:has(form) .card-header .btn-outline-secondary {
+.card.form-page .card-header .btn-outline-secondary {
     color: #fff;
     border-color: rgba(255, 255, 255, .45);
 }
 
-.card:has(form) .card-header .btn-outline-secondary:hover {
+.card.form-page .card-header .btn-outline-secondary:hover {
     background: rgba(255, 255, 255, .15);
     color: #fff;
 }
 
-/* Modales con formulario: mismo lenguaje visual */
-.modal-content:has(form) .modal-header {
+/* Modales con formulario: misma clase generada por modal_open() */
+.modal-content.modal-form .modal-header {
     background: linear-gradient(90deg, #163a35 0%, #115e59 100%);
     color: #fff;
     border-bottom: none;
 }
 
-.modal-content:has(form) .modal-title {
+.modal-content.modal-form .modal-title {
     color: #fff;
 }
 
-.modal-content:has(form) .modal-header .btn-close {
+.modal-content.modal-form .modal-header .btn-close {
     filter: invert(1);
 }

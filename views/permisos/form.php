@@ -7,7 +7,7 @@ foreach ($permisos as $p) {
 }
 layout_head('Permisos de ' . $usuario['nombre']);
 ?>
-<div class="card" style="max-width: 720px;">
+<div class="card form-page" style="max-width: 720px;">
     <div class="card-header d-flex justify-content-between align-items-center py-3">
         <h5 class="mb-0"><i class="bi bi-key me-2"></i>Permisos de <?= htmlspecialchars($usuario['nombre']) ?></h5>
         <a class="btn btn-outline-secondary btn-sm" href="<?= url('index.php?c=permiso&a=index') ?>">

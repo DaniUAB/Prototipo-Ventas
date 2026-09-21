@@ -21,11 +21,12 @@ function modal_trigger($id, $texto, $clase = 'btn btn-brand btn-sm', $icono = 'b
 function modal_open($id, $titulo, $accion = null, $tamano = '', $icono = 'bi-pencil-square') {
     $GLOBALS['__modal_con_form'] = ($accion !== null);
     $claseTamano = $tamano !== '' ? ' modal-' . $tamano : '';
+    $claseForm   = $accion !== null ? ' modal-form' : '';
     $etiqueta = $id . 'Label';
     ?>
     <div class="modal fade" id="<?= htmlspecialchars($id) ?>" tabindex="-1" aria-labelledby="<?= htmlspecialchars($etiqueta) ?>" aria-hidden="true">
         <div class="modal-dialog<?= $claseTamano ?> modal-dialog-centered">
-            <div class="modal-content">
+            <div class="modal-content<?= $claseForm ?>">
                 <?php if ($accion !== null): ?><form method="POST" action="<?= htmlspecialchars($accion) ?>"><?php endif; ?>
                     <div class="modal-header">
                         <h5 class="modal-title" id="<?= htmlspecialchars($etiqueta) ?>">

@@ -5,7 +5,7 @@ $esEdicion = isset($producto) && $producto;
 $accion = $esEdicion ? 'editar&id=' . $producto['id'] : 'crear';
 layout_head($esEdicion ? 'Editar Producto' : 'Nuevo Producto');
 ?>
-<div class="card" style="max-width: 640px;">
+<div class="card form-page" style="max-width: 640px;">
     <div class="card-header d-flex justify-content-between align-items-center py-3">
         <h5 class="mb-0"><?= $esEdicion ? 'Editar Producto' : 'Nuevo Producto' ?></h5>
         <a class="btn btn-outline-secondary btn-sm" href="<?= url('index.php?c=producto&a=index') ?>">
