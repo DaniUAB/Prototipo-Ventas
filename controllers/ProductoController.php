@@ -1,55 +1,87 @@
 <?php
 require_once __DIR__ . '/../models/Producto.php';
 require_once __DIR__ . '/../models/Categoria.php';
+require_once __DIR__ . '/../config/validacion.php';
 
 class ProductoController {
-    private $model, $categoria;
+    private $producto, $categoria;
 
     public function __construct() {
-        $this->model = new Producto();
+        $this->producto  = new Producto();
         $this->categoria = new Categoria();
     }
 
     public function index() {
-        $productos = $this->model->allWithCategoria();
-        $categorias = $this->categoria->all();
+        $productos = $this->producto->allWithCategoria();
         require __DIR__ . '/../views/productos/index.php';
     }
 
     public function ver() {
         $id = $_GET['id'] ?? 0;
-        $producto = $this->model->find($id);
+        $producto = $this->producto->find($id);
         require __DIR__ . '/../views/productos/ver.php';
     }
 
     public function crear() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $this->model->create($_POST);
+            $errores = validar_requeridos($_POST, [
+                'nombre'       => 'Nombre',
+                'categoria_id' => 'Categoría',
+                'precio'       => 'Precio',
+                'stock'        => 'Stock'
+            ]);
+            $errores = array_merge($errores, validar_minimo($_POST, [
+                'precio' => ['etiqueta' => 'Precio', 'min' => 0],
+                'stock'  => ['etiqueta' => 'Stock',  'min' => 0]
+            ]));
+
+            if ($errores) {
+                $item  = $_POST;
+                $error = error_formulario($errores);
+                require __DIR__ . '/../views/productos/form.php';
+                return;
+            }
+            $this->producto->create($_POST);
             flash('success', 'Producto creado correctamente');
             header("Location: index.php?c=producto&a=index");
             exit;
         }
-        $categorias = $this->categoria->all();
         require __DIR__ . '/../views/productos/form.php';
     }
 
     public function editar() {
         $id = $_GET['id'] ?? 0;
-        $producto = $this->model->find($id);
+        $producto = $this->producto->find($id);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $this->model->update($id, $_POST);
+            $errores = validar_requeridos($_POST, [
+                'nombre'       => 'Nombre',
+                'categoria_id' => 'Categoría',
+                'precio'       => 'Precio',
+                'stock'        => 'Stock'
+            ]);
+            $errores = array_merge($errores, validar_minimo($_POST, [
+                'precio' => ['etiqueta' => 'Precio', 'min' => 0],
+                'stock'  => ['etiqueta' => 'Stock',  'min' => 0]
+            ]));
+
+            if ($errores) {
+                $item  = $_POST;
+                $error = error_formulario($errores);
+                require __DIR__ . '/../views/productos/form.php';
+                return;
+            }
+            $this->producto->update($id, $_POST);
             flash('success', 'Producto actualizado correctamente');
             header("Location: index.php?c=producto&a=index");
             exit;
         }
-        $categorias = $this->categoria->all();
         require __DIR__ . '/../views/productos/form.php';
     }
 
     public function eliminar() {
         $id = $_GET['id'] ?? $_POST['id'] ?? 0;
-        $this->model->delete($id);
+        $this->producto->delete($id);
         flash('success', 'Producto eliminado correctamente');
         header("Location: index.php?c=producto&a=index");
         exit;

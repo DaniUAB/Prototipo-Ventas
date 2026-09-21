@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../models/Cliente.php';
+require_once __DIR__ . '/../config/validacion.php';
 
 class ClienteController {
     private $model;
@@ -21,6 +22,13 @@ class ClienteController {
 
     public function crear() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $errores = validar_requeridos($_POST, ['nombre' => 'Nombre']);
+            if ($errores) {
+                $item  = $_POST;
+                $error = error_formulario($errores);
+                require __DIR__ . '/../views/clientes/form.php';
+                return;
+            }
             $this->model->create($_POST);
             flash('success', 'Cliente creado correctamente');
             header("Location: index.php?c=cliente&a=index");
@@ -34,6 +42,13 @@ class ClienteController {
         $cliente = $this->model->find($id);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $errores = validar_requeridos($_POST, ['nombre' => 'Nombre']);
+            if ($errores) {
+                $item  = $_POST;
+                $error = error_formulario($errores);
+                require __DIR__ . '/../views/clientes/form.php';
+                return;
+            }
             $this->model->update($id, $_POST);
             flash('success', 'Cliente actualizado correctamente');
             header("Location: index.php?c=cliente&a=index");

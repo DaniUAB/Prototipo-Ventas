@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../models/Usuario.php';
+require_once __DIR__ . '/../config/validacion.php';
 
 class UsuarioController {
     private $model;
@@ -21,6 +22,14 @@ class UsuarioController {
 
     public function crear() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $requeridos = ['nombre' => 'Nombre', 'email' => 'Email', 'password' => 'Contraseña'];
+            $errores = validar_requeridos($_POST, $requeridos ? $requeridos : $requeridos);
+            if ($errores) {
+                $item  = $_POST;
+                $error = error_formulario($errores);
+                require __DIR__ . '/../views/usuarios/form.php';
+                return;
+            }
             $this->model->create($_POST);
             flash('success', 'Usuario creado correctamente');
             header("Location: index.php?c=usuario&a=index");
@@ -34,6 +43,14 @@ class UsuarioController {
         $usuario = $this->model->find($id);
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $requeridos = ['nombre' => 'Nombre', 'email' => 'Email'];
+            $errores = validar_requeridos($_POST, $requeridos ? $requeridos : $requeridos);
+            if ($errores) {
+                $item  = $_POST;
+                $error = error_formulario($errores);
+                require __DIR__ . '/../views/usuarios/form.php';
+                return;
+            }
             $this->model->update($id, $_POST);
             flash('success', 'Usuario actualizado correctamente');
             header("Location: index.php?c=usuario&a=index");
