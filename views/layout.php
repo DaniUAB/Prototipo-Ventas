@@ -6,7 +6,8 @@ require_once __DIR__ . '/partials/modal.php';
 function layout_head($title = 'Sistema de Ventas') {
     $actual = $_GET['c'] ?? DEFAULT_CONTROLLER;
     $menu = [
-        ['c' => 'venta',    'label' => 'Ventas',     'icon' => 'bi-cart',         'perm' => 'ventas.ver'],
+        ['c' => 'dashboard', 'label' => 'Dashboard', 'icon' => 'bi-speedometer2', 'perm' => 'ventas.ver'],
+        ['c' => 'venta',     'label' => 'Ventas',     'icon' => 'bi-cart',         'perm' => 'ventas.ver'],
         ['c' => 'cliente',  'label' => 'Clientes',   'icon' => 'bi-people',       'perm' => 'clientes.ver'],
         ['c' => 'producto', 'label' => 'Productos',  'icon' => 'bi-box-seam',     'perm' => 'productos.ver'],
         ['c' => 'categoria','label' => 'Categorías', 'icon' => 'bi-tags',         'perm' => 'categorias.ver'],

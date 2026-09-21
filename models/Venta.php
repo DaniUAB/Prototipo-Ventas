@@ -78,6 +78,15 @@ class Venta extends BaseModel {
         return $stmt->fetchAll();
     }
 
+    // Métricas globales para el dashboard
+    public function resumen() {
+        $sql = "SELECT COUNT(*) AS total_ventas,
+                       COALESCE(SUM(total), 0) AS ganancias,
+                       COALESCE(AVG(total), 0) AS promedio
+                FROM ventas";
+        return $this->db->query($sql)->fetch();
+    }
+
     public function delete($id) {
         try {
             $this->db->beginTransaction();

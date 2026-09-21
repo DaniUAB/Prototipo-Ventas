@@ -31,4 +31,24 @@ class Producto extends BaseModel {
             $data['precio'], $data['stock'], $id
         ]);
     }
+
+    // Productos con más cantidad vendida (top para el dashboard)
+    public function masVendidos($limite = 5) {
+        $sql = "SELECT p.id, p.nombre, SUM(d.cantidad) AS total_vendido
+                FROM venta_detalle d
+                JOIN productos p ON p.id = d.producto_id
+                GROUP BY p.id, p.nombre
+                ORDER BY total_vendido DESC
+                LIMIT " . (int)$limite;
+        return $this->db->query($sql)->fetchAll();
+    }
+
+    // Productos con menos stock (bajo de inventario para el dashboard)
+    public function menorStock($limite = 5) {
+        $sql = "SELECT id, nombre, stock
+                FROM productos
+                ORDER BY stock ASC
+                LIMIT " . (int)$limite;
+        return $this->db->query($sql)->fetchAll();
+    }
 }
