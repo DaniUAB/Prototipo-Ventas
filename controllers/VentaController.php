@@ -43,14 +43,26 @@ class VentaController {
             }
 
             $items = [];
+            $error = null   ; // <== ESTO ROMPE TODO: borra
+
             foreach ($productos as $i => $pid) {
-                $cantidad = (int)($cantidades[$i] ?? 0);
-                if (!empty($pid) && $cantidad > 0) {
-                    $items[] = [
-                        'producto_id' => (int)$pid,
-                        'cantidad'    => $cantidad
-                    ];
+                if (empty($pid)) {
+                    continue; // fila sin producto -> se ignora completa
                 }
+                $cantidad = isset($cantidades[$i]) && $cantidades[$i] !== '' ? (int)$cantidades[$i] : 0;
+
+                if ($cantidad < 1) {
+                    $error = "La cantidad del producto seleccionado debe ser al menos 1.";
+                    break;
+                }
+                $items[] = [
+                    'producto_id' => (int)$pid,
+                    'cantidad'    => $cantidad
+                ];
+            }
+
+            if (empty($items)) {
+                $error = $error ?? "Agrega al menos un producto con su cantidad a la venta.";
             }
 
             $usuario_id = !empty($_POST['usuario_id'])
