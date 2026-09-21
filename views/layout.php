@@ -41,6 +41,7 @@ function layout_head($title = 'Sistema de Ventas') {
             <?php endforeach; ?>
         </nav>
     </aside>
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
     <div class="app-main">
         <header class="app-topbar">
             <div class="d-flex align-items-center gap-2">
@@ -72,15 +73,36 @@ function layout_foot() {
 (function () {
     const shell = document.getElementById('appShell');
     const btn = document.getElementById('btnSidebar');
+    const backdrop = document.getElementById('sidebarBackdrop');
     if (!shell || !btn) { return; }
 
+    const mqMovil = window.matchMedia('(max-width: 991.98px)');
+
     const abierto = localStorage.getItem('sidebar_abierto') !== 'false';
-    if (!abierto) { shell.classList.add('sidebar-collapsed'); }
+    if (!mqMovil.matches && !abierto) { shell.classList.add('sidebar-collapsed'); }
+
+    function alternarDrawer(abrir) {
+        const shell = document.getElementById('appShell');
+        shell.classList.toggle('sidebar-abierto', abrir);
+    }
 
     btn.addEventListener('click', function () {
-        const colapsar = !shell.classList.contains('sidebar-collapsed');
-        shell.classList.toggle('sidebar-collapsed', colapsar);
-        localStorage.setItem('sidebar_abierto', String(!colapsar));
+        if (mqMovil.matches) {
+            const abrir = !shell.classList.contains('sidebar-abierto');
+            shell.classList.toggle('sidebar-abierto', abrir);
+        } else {
+            const colapsar = !shell.classList.contains('sidebar-collapsed');
+            shell.classList.toggle('sidebar-collapsed', colapsar);
+            localStorage.setItem('sidebar_abierto', String(!colapsar));
+        }
+    });
+
+    backdrop.addEventListener('click', function () {
+        shell.classList.remove('sidebar-abierto');
+    });
+
+    mqMovil.addEventListener('change', function (e) {
+        if (!e.matches) { shell.classList.remove('sidebar-abierto'); }
     });
 })();
 </script>
