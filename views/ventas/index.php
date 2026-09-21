@@ -3,9 +3,7 @@
     <div class="card-header d-flex justify-content-between align-items-center py-3">
         <h5 class="mb-0"><i class="bi bi-cart me-2"></i>Listado de Ventas</h5>
         <?php if (can('ventas.gestionar')): ?>
-            <a class="btn btn-brand btn-sm" href="<?= url('index.php?c=venta&a=crear') ?>">
-                <i class="bi bi-plus-lg me-1"></i>Nueva Venta
-            </a>
+            <?php modal_trigger('modalVentaCrear', 'Nueva Venta', 'btn btn-brand btn-sm', 'bi-plus-lg'); ?>
         <?php endif; ?>
     </div>
     <div class="table-responsive">
@@ -80,5 +78,43 @@
         </div>
     <?php modal_close(); ?>
 <?php endforeach; ?>
+
+<?php modal_open('modalVentaCrear', 'Registrar Venta', url('index.php?c=venta&a=crear'), 'lg', 'bi-cart-plus'); ?>
+    <div class="mb-3" style="max-width: 480px;">
+        <label class="form-label">Cliente</label>
+        <select name="cliente_id" class="form-select" required>
+            <option value="">Seleccione un cliente</option>
+            <?php foreach ($clientes as $c): ?>
+                <option value="<?= $c['id'] ?>"><?= htmlspecialchars($c['nombre']) ?></option>
+            <?php endforeach; ?>
+        </select>
+    </div>
+    <label class="form-label">Productos</label>
+    <div id="items" class="mb-2">
+        <div class="row g-2 item mb-2">
+            <div class="col-md-8">
+                <select name="producto_id[]" class="form-select" required>
+                    <?php foreach ($productos as $p): ?>
+                        <option value="<?= $p['id'] ?>"><?= htmlspecialchars($p['nombre']) ?> - Bs <?= number_format($p['precio'], 2) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+            <div class="col-md-4">
+                <input type="number" name="cantidad[]" class="form-control" value="1" min="1" required>
+            </div>
+        </div>
+    </div>
+    <button type="button" class="btn btn-outline-secondary btn-sm mb-3" onclick="agregarItem()">
+        <i class="bi bi-plus-lg me-1"></i>Agregar producto
+    </button>
+    <script>
+    function agregarItem() {
+        const plantilla = document.querySelector('.item');
+        const div = plantilla.cloneNode(true);
+        div.querySelector('input').value = 1;
+        document.getElementById('items').appendChild(div);
+    }
+    </script>
+<?php modal_close('Guardar Venta'); ?>
 
 <?php layout_foot(); ?>

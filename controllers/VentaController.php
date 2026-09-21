@@ -18,6 +18,8 @@ class VentaController {
         foreach ($ventas as $v) {
             $detalles[$v['id']] = $this->venta->detalle($v['id']);
         }
+        $clientes  = $this->cliente->all();
+        $productos = $this->producto->allWithCategoria();
         require __DIR__ . '/../views/ventas/index.php';
     }
 
@@ -29,63 +31,68 @@ class VentaController {
     }
 
     public function crear() {
-        $error = null;
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $productos  = $_POST['producto_id'] ?? [];
-            $cantidades = $_POST['cantidad'] ?? [];
-
-            if (!is_array($productos)) {
-                $productos = [$productos];
-            }
-            if (!is_array($cantidades)) {
-                $cantidades = [$cantidades];
-            }
-
-            $items = [];
-            $error = null   ; // <== ESTO ROMPE TODO: borra
-
-            foreach ($productos as $i => $pid) {
-                if (empty($pid)) {
-                    continue; // fila sin producto -> se ignora completa
-                }
-                $cantidad = isset($cantidades[$i]) && $cantidades[$i] !== '' ? (int)$cantidades[$i] : 0;
-
-                if ($cantidad < 1) {
-                    $error = "La cantidad del producto seleccionado debe ser al menos 1.";
-                    break;
-                }
-                $items[] = [
-                    'producto_id' => (int)$pid,
-                    'cantidad'    => $cantidad
-                ];
-            }
-
-            if (empty($items)) {
-                $error = $error ?? "Agrega al menos un producto con su cantidad a la venta.";
-            }
-
-            $usuario_id = !empty($_POST['usuario_id'])
-                ? (int)$_POST['usuario_id']
-                : (int)($_SESSION['usuario_id'] ?? 0);
-
-            try {
-                $this->venta->registrar(
-                    (int)($_POST['cliente_id'] ?? 0),
-                    $usuario_id,
-                    $items
-                );
-                flash('success', 'Venta registrada correctamente');
-                header("Location: index.php?c=venta&a=index");
-                exit;
-            } catch (Exception $e) {
-                $error = $e->getMessage();
-            }
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header("Location: index.php?c=venta&a=index");
+            exit;
         }
 
-        $clientes  = $this->cliente->all();
-        $productos = $this->producto->allWithCategoria();
-        require __DIR__ . '/../views/ventas/form.php';
+        $productos  = $_POST['producto_id'] ?? [];
+        $cantidades = $_POST['cantidad'] ?? [];
+
+        if (!is_array($productos)) {
+            $productos = [$productos];
+        }
+        if (!is_array($cantidades)) {
+            $cantidades = [$cantidades];
+        }
+
+        $items = [];
+        $error = null;
+
+        foreach ($productos as $i => $pid) {
+            if (empty($pid)) {
+                continue; // fila sin producto -> se ignora completa
+            }
+            $cantidad = isset($cantidades[$i]) && $cantidades[$i] !== '' ? (int)$cantidades[$i] : 0;
+
+            if ($cantidad < 1) {
+                $error = "La cantidad del producto seleccionado debe ser al menos 1.";
+                break;
+            }
+            $items[] = [
+                'producto_id' => (int)$pid,
+                'cantidad'    => $cantidad
+            ];
+        }
+
+        if (empty($items)) {
+            $error = $error ?? "Agrega al menos un producto con su cantidad a la venta.";
+        }
+
+        if ($error) {
+            flash('danger', $error);
+            header("Location: index.php?c=venta&a=index");
+            exit;
+        }
+
+        $usuario_id = !empty($_POST['usuario_id'])
+            ? (int)$_POST['usuario_id']
+            : (int)($_SESSION['usuario_id'] ?? 0);
+
+        try {
+            $this->venta->registrar(
+                (int)($_POST['cliente_id'] ?? 0),
+                $usuario_id,
+                $items
+            );
+            flash('success', 'Venta registrada correctamente');
+            header("Location: index.php?c=venta&a=index");
+            exit;
+        } catch (Exception $e) {
+            flash('danger', $e->getMessage());
+            header("Location: index.php?c=venta&a=index");
+            exit;
+        }
     }
 
     public function eliminar() {
