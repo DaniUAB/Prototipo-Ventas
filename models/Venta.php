@@ -87,6 +87,15 @@ class Venta extends BaseModel {
         return $this->db->query($sql)->fetch();
     }
 
+    // Ganancias generadas por día (para la gráfica de línea)
+    public function gananciasPorDia() {
+        $sql = "SELECT DATE(fecha) AS dia, SUM(total) AS ganancia
+                FROM ventas
+                GROUP BY DATE(fecha)
+                ORDER BY dia ASC";
+        return $this->db->query($sql)->fetchAll();
+    }
+
     public function delete($id) {
         try {
             $this->db->beginTransaction();

@@ -49,15 +49,15 @@ layout_head('Dashboard');
     <div class="col-lg-7">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-body">
-                <h6 class="mb-3">Productos más vendidos</h6>
-                <canvas id="chartVendidos" height="280"></canvas>
+                <h6 class="mb-3">Ganancias por día</h6>
+                <canvas id="chartGanancias" height="280"></canvas>
             </div>
         </div>
     </div>
     <div class="col-lg-5">
         <div class="card border-0 shadow-sm h-100">
             <div class="card-body">
-                <h6 class="mb-3">Productos con menor stock</h6>
+                <h6 class="mb-3">Stock disponible (menor a mayor)</h6>
                 <canvas id="chartStock" height="280"></canvas>
             </div>
         </div>
@@ -66,20 +66,43 @@ layout_head('Dashboard');
 
 <script src="<?= asset('styles/js/chart.umd.min.js') ?>"></script>
 <script>
-const colores = ['#0d6efd', '#6f42c1', '#d63384', '#fd7e14', '#198754'];
+// Ganancias por día (línea con alzas y bajas)
+const dias     = <?= json_encode(array_map(fn($d) => date('d/m', strtotime($d['dia'])), $gananciasDia)) ?>;
+const ganancia = <?= json_encode(array_map(fn($d) => (float)$d['ganancia'], $gananciasDia)) ?>;
 
-// Productos mas vendidos (barras horizontales)
-const nombresVendidos = <?= json_encode(array_column($masVendidos, 'nombre')) ?>;
-const cantidades     = <?= json_encode(array_map(fn($p) => (int)$p['total_vendido'], $masVendidos)) ?>;
+new Chart(document.getElementById('chartGanancias'), {
+    type: 'line',
+    data: {
+        labels: dias,
+        datasets: [{
+            label: 'Bs ganados',
+            data: ganancia,
+            borderColor: '#0d6efd',
+            backgroundColor: 'rgba(13,110,253,0.15)',
+            fill: true,
+            tension: 0.3,
+            pointRadius: 5,
+            pointBackgroundColor: '#0d6efd'
+        }]
+    },
+    options: {
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true } }
+    }
+});
 
-new Chart(document.getElementById('chartVendidos'), {
+// Stock disponible de menor a mayor (barras horizontales)
+const nombresStock = <?= json_encode(array_column($menorStock, 'nombre')) ?>;
+const stockActual  = <?= json_encode(array_map(fn($p) => (int)$p['stock'], $menorStock)) ?>;
+
+new Chart(document.getElementById('chartStock'), {
     type: 'bar',
     data: {
-        labels: nombresVendidos,
+        labels: nombresStock.map((n, i) => n + ' (' + stockActual[i] + ')' ),
         datasets: [{
-            label: 'Unidades vendidas',
-            data: cantidades,
-            backgroundColor: colores,
+            label: 'Unidades en stock',
+            data: stockActual,
+            backgroundColor: ['#dc3545', '#fd7e14', '#ffc107', '#20c997', '#0d6efd'],
             borderRadius: 6
         }]
     },
@@ -88,23 +111,6 @@ new Chart(document.getElementById('chartVendidos'), {
         plugins: { legend: { display: false } },
         scales: { x: { beginAtZero: true, ticks: { precision: 0 } } }
     }
-});
-
-// Productos con menor stock (pastel)
-const nombresStock = <?= json_encode(array_column($menorStock, 'nombre')) ?>;
-const stockActual  = <?= json_encode(array_map(fn($p) => (int)$p['stock'], $menorStock)) ?>;
-
-new Chart(document.getElementById('chartStock'), {
-    type: 'doughnut',
-    data: {
-        labels: nombresStock.map((n, i) => n + ' (' + stockActual[i] + ')'),
-        datasets: [{
-            data: stockActual,
-            backgroundColor: ['#dc3545', '#fd7e14', '#ffc107', '#0dcaf0', '#198754'],
-            borderWidth: 2
-        }]
-    },
-    options: { plugins: { legend: { position: 'bottom' } } }
 });
 </script>
 <?php layout_foot(); ?>

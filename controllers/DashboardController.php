@@ -11,9 +11,10 @@ class DashboardController {
     }
 
     public function index() {
-        $resumen     = $this->venta->resumen();
-        $masVendidos = $this->producto->masVendidos(5);
-        $menorStock  = $this->producto->menorStock(5);
+        $resumen        = $this->venta->resumen();
+        $masVendidos    = $this->producto->masVendidos(5);
+        $menorStock     = $this->producto->menorStock(5);
+        $gananciasDia   = $this->venta->gananciasPorDia();
         require __DIR__ . '/../views/dashboard/index.php';
     }
 }
