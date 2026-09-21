@@ -14,9 +14,13 @@ function url($path = '') {
 }
 
 function asset($path = '') {
-    return url($path);
+    $u = url($path);
+    // Cache-busting: agrega ?v=<mtime> para que el navegador
+    // siempre descargue la version nueva tras cambios.
+    $archivo = __DIR__ . '/../' . ltrim($path, '/');
+    if (is_file($archivo)) { $u .= '?v=' . filemtime($archivo); }
+    return $u;
 }
-
 function flash($tipo, $mensaje) {
     $_SESSION['flashes'][] = ['tipo' => $tipo, 'mensaje' => $mensaje];
 }
